@@ -22,13 +22,14 @@ export default function NoteForm() {
   }, [draft, setDraft]);
 
   const handleChange = (
-    evnt: React.ChangeEvent<
+    e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >,
   ) => {
+    const { name, value } = e.target;
     setDraft({
       ...draft,
-      [evnt.target.name]: evnt.target.value,
+      [name]: value,
     });
   };
 
@@ -52,6 +53,8 @@ export default function NoteForm() {
 
   const handleCancel = () => router.back();
 
+  if (!draft) return null;
+
   return (
     <form action={handleSubmit} className={css.form}>
       <div className={css.formGroup}>
@@ -61,7 +64,7 @@ export default function NoteForm() {
           type="text"
           name="title"
           className={css.input}
-          defaultValue={draft?.title}
+          value={draft.title}
           onChange={handleChange}
           minLength={3}
           maxLength={50}
@@ -77,7 +80,7 @@ export default function NoteForm() {
           name="content"
           rows={8}
           className={css.textarea}
-          defaultValue={draft?.content}
+          value={draft.content}
           onChange={handleChange}
           maxLength={500}
         />
@@ -90,7 +93,7 @@ export default function NoteForm() {
           id={`${fieldId}-tag`}
           name="tag"
           className={css.select}
-          defaultValue={draft?.tag}
+          value={draft.tag}
           onChange={handleChange}
         >
           <option value="Todo">Todo</option>
@@ -110,7 +113,7 @@ export default function NoteForm() {
         >
           Cancel
         </button>
-        <button type="submit" className={css.submitButton} disabled={false}>
+        <button type="submit" className={css.submitButton}>
           Create note
         </button>
       </div>
